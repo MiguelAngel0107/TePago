@@ -8,7 +8,7 @@ class UserAdmin(admin.ModelAdmin):
     list_display = (
         'first_name', 
         'last_name', 
-        'access_code',
+        'email',
         'is_staff',
         'is_superuser',
         'is_active',
@@ -17,12 +17,12 @@ class UserAdmin(admin.ModelAdmin):
     list_display_links = (
         'first_name', 
         'last_name', 
-        'access_code', 
+        'email', 
         )
     search_fields = (
         'first_name', 
         'last_name', 
-        'access_code',
+        'email',
         'is_staff',
         'is_superuser',
         'is_active',

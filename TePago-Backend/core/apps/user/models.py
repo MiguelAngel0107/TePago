@@ -3,19 +3,18 @@ from django.contrib.auth.models import AbstractBaseUser, PermissionsMixin, BaseU
 
 
 class UserAccountManager(BaseUserManager):
-    def create_user(self, access_code, password=None, **extra_fields):
-        if not access_code:
-            raise ValueError('User must have an access_code address')
+    def create_user(self, email, password=None, **extra_fields):
+        if not email:
+            raise ValueError('User must have an email address')
 
-        user = self.model(access_code=access_code, **extra_fields)
-
+        user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save()
 
         return user
 
-    def create_superuser(self, access_code, password, **extra_fields):
-        user = self.create_user(access_code, password, **extra_fields)
+    def create_superuser(self, email, password, **extra_fields):
+        user = self.create_user(email, password, **extra_fields)
 
         user.is_superuser = True
         user.is_staff = True
@@ -25,7 +24,7 @@ class UserAccountManager(BaseUserManager):
 
 
 class UserAccount(AbstractBaseUser, PermissionsMixin):
-    access_code = models.CharField(max_length=255, unique=True)
+    email = models.EmailField(max_length=255, unique=True)
     first_name = models.CharField(max_length=255)
     last_name = models.CharField(max_length=255)
     is_active = models.BooleanField(default=True)
@@ -33,7 +32,9 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
 
     objects = UserAccountManager()
 
-    USERNAME_FIELD = 'access_code'
+    # Configuraciones específicas de Djoser
+    EMAIL_FIELD = 'email'
+    USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
 
     def __str__(self):
