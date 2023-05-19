@@ -37,6 +37,7 @@ SECONDARY_APPS = [
 
 TERTIARY_APPS = [
     'rest_framework',
+    'drf_yasg',
     'djoser',
     'social_django',
     'rest_framework_simplejwt',
@@ -88,6 +89,20 @@ DJOSER = {
         'current_user': 'apps.user.serializers.UserCreateSerializer',
         'user_delete': 'djoser.serializers.UserDeleteSerializer',
     },
+}
+
+SWAGGER_SETTINGS = {
+    'SECURITY_DEFINITIONS': {
+        'Bearer': {
+            'type': 'apiKey',
+            'name': 'Authorization',
+            'in': 'header',
+            'description': 'JWT Token',
+        },
+    },
+    'USE_SESSION_AUTH': False,  # Desactiva la autenticación de sesión
+    'PERSIST_AUTH': True,  # Habilita la persistencia de la autenticación
+    'REFETCH_SCHEMA_WITH_AUTH': True,  # Vuelve a cargar el esquema con autenticación
 }
 
 MIDDLEWARE = [
