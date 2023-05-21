@@ -35,7 +35,7 @@ class UserAccount(AbstractBaseUser, PermissionsMixin):
     # Configuraciones específicas de Djoser
     EMAIL_FIELD = 'email'
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = []
+    REQUIRED_FIELDS = ['first_name', 'last_name'] # Campos que apareceran en Auth/User/Me/
 
     def __str__(self):
-        return self.access_code
+        return self.email

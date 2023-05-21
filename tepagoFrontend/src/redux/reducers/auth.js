@@ -2,10 +2,26 @@ import {createSlice} from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const initialState = {
-  access: null,
-  refresh: null,
+  access: AsyncStorage.getItem('access'),
+  refresh: AsyncStorage.getItem('refresh'),
   isAuthenticated: null,
   isMetaMask: null,
+};
+
+const loadInitialState = async () => {
+  try {
+    const access = await AsyncStorage.getItem('access');
+    const refresh = await AsyncStorage.getItem('refresh');
+
+    return {
+      ...initialState,
+      access,
+      refresh,
+    };
+  } catch (error) {
+    console.log('Error al cargar el estado inicial:', error);
+    return initialState;
+  }
 };
 
 const authSlice = createSlice({
@@ -19,8 +35,8 @@ const authSlice = createSlice({
       };
     },
     AUTHENTICATED_FAIL(state, action) {
-      localStorage.removeItem('access');
-      localStorage.removeItem('refresh');
+      AsyncStorage.removeItem('access');
+      AsyncStorage.removeItem('refresh');
       return {
         ...state,
         isAuthenticated: false,
@@ -32,29 +48,28 @@ const authSlice = createSlice({
     SIGNUP_FAIL(state, action) {},
     LOGIN_SUCCESS(state, action) {
       let payload = action.payload;
-      localStorage.setItem('access', payload.access);
-      localStorage.setItem('refresh', payload.refresh);
-      console.log('Exito');
+      AsyncStorage.setItem('access', payload.access);
+      AsyncStorage.setItem('refresh', payload.refresh);
       return {
         ...state,
         isAuthenticated: true,
-        access: localStorage.getItem('access'),
-        refresh: localStorage.getItem('refresh'),
+        access: AsyncStorage.getItem('access'),
+        refresh: AsyncStorage.getItem('refresh'),
       };
     },
     LOGIN_FAIL(state, action) {},
     REFRESH_SUCCESS(state, action) {
       let payload = action.payload;
-      localStorage.setItem('access', payload.access);
+      AsyncStorage.setItem('access', payload.access);
       return {
         ...state,
-        access: localStorage.getItem('access'),
+        access: AsyncStorage.getItem('access'),
       };
     },
     REFRESH_FAIL(state, action) {},
     LOGOUT(state, action) {
-      localStorage.removeItem('access');
-      localStorage.removeItem('refresh');
+      AsyncStorage.removeItem('access');
+      AsyncStorage.removeItem('refresh');
       return {
         ...state,
         access: null,
