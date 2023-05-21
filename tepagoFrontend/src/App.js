@@ -1,17 +1,32 @@
 import React from 'react';
-import {NativeBaseProvider} from 'native-base';
-import store from './store';
-import {theme} from './cutomizingTheme'
+
 import {Provider} from 'react-redux';
+import store from './store';
+
+import {NativeBaseProvider} from 'native-base';
+import {theme} from './cutomizingTheme';
+
+import {NavigationContainer} from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+
 import Home from './screens/home';
 import Register from './screens/auth/register';
-import Navbar from './components/navigation/navbar';
+import Login from './screens/auth/login';
+
+const Stack = createNativeStackNavigator();
 
 function AppStart() {
   return (
     <Provider store={store}>
       <NativeBaseProvider theme={theme}>
-        <Navbar />
+        <NavigationContainer>
+          <Stack.Navigator initialRouteName="Home">
+            <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
+            <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
+            <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+          </Stack.Navigator>
+        </NavigationContainer>
       </NativeBaseProvider>
     </Provider>
   );

@@ -1,94 +1,62 @@
-import React, { useState } from 'react';
-import { TouchableOpacity, View, StyleSheet } from 'react-native';
-import { Ionicons } from 'react-native-vector-icons'; // Si no estás utilizando Expo, importa los íconos de este modo
+import React, {useState} from 'react';
+import {TouchableOpacity, View} from 'react-native';
+import {Text, Box, HStack} from 'native-base';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
 
   const handleToggle = () => {
+    console.log();
     setIsOpen(!isOpen);
   };
 
-  const handleNavigate = (screenName) => {
-    // Aquí puedes agregar la lógica para redirigir a otros componentes
+  const handleNavigate = screenName => {
     console.log(`Navigating to ${screenName}`);
+    // Agrega aquí la lógica para redirigir a otro componente
+  };
+
+  const renderMenuItems = () => {
+    const menuItems = [
+      //{icon: 'check', screen: 'CPNT1'},
+      {icon: 'star', screen: 'CPNT12'},
+      //{icon: 'heart', screen: 'CPNT13'},
+      {icon: 'envelope', screen: 'CPNT14'},
+      {icon: 'gear', screen: 'CPNT15'},
+      {icon: 'remove', screen: 'CPNT15'},
+    ];
+
+    return menuItems.map((item, index) => (
+      <TouchableOpacity key={index} onPress={handleToggle}>
+        <Box
+          style={{borderColor: 'white', borderWidth: 2}}
+          bgColor={'accent.100'}
+          p={4}
+          borderRadius={'full'}
+          marginRight={index < menuItems.length - 1 ? 6 : 0}>
+          <Icon name={item.icon} size={30} color="black" />
+        </Box>
+      </TouchableOpacity>
+    ));
   };
 
   return (
-    <View style={styles.container}>
+    <Box position="absolute" bottom={10} right={10} alignItems="flex-end">
       {isOpen && (
-        <View style={styles.menuContainer}>
-          <TouchableOpacity
-            style={styles.menuItem}
-            onPress={() => handleNavigate('Componente1')}
-          >
-            <Ionicons name="md-checkmark-circle" size={32} color="white" />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.menuItem}
-            onPress={() => handleNavigate('Componente2')}
-          >
-            <Ionicons name="md-star" size={32} color="white" />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.menuItem}
-            onPress={() => handleNavigate('Componente3')}
-          >
-            <Ionicons name="md-heart" size={32} color="white" />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.menuItem}
-            onPress={() => handleNavigate('Componente4')}
-          >
-            <Ionicons name="md-notifications" size={32} color="white" />
-          </TouchableOpacity>
-          <TouchableOpacity
-            style={styles.menuItem}
-            onPress={() => handleNavigate('Componente5')}
-          >
-            <Ionicons name="md-settings" size={32} color="white" />
-          </TouchableOpacity>
-        </View>
+        <Box>
+          <HStack>{renderMenuItems()}</HStack>
+        </Box>
       )}
-      <TouchableOpacity style={styles.toggleButton} onPress={handleToggle}>
-        <Ionicons name={isOpen ? 'md-close' : 'md-menu'} size={32} color="black" />
-      </TouchableOpacity>
-    </View>
+
+      {!isOpen && (
+        <TouchableOpacity onPress={handleToggle}>
+          <Box bgColor={'accent.100'} p={4} borderRadius={'full'}>
+            <Icon name="home" size={30} color="black" />
+          </Box>
+        </TouchableOpacity>
+      )}
+    </Box>
   );
 };
 
-const styles = StyleSheet.create({
-  container: {
-    position: 'absolute',
-    bottom: 20,
-    right: 20,
-    alignItems: 'flex-end',
-  },
-  toggleButton: {
-    width: 60,
-    height: 60,
-    borderRadius: 30,
-    backgroundColor: 'lightblue',
-    justifyContent: 'center',
-    alignItems: 'center',
-    elevation: 5,
-  },
-  menuContainer: {
-    position: 'absolute',
-    bottom: 80,
-    right: 0,
-    flexDirection: 'row',
-    justifyContent: 'center',
-    alignItems: 'center',
-    backgroundColor: 'lightblue',
-    borderRadius: 15,
-    paddingVertical: 10,
-    paddingHorizontal: 10,
-  },
-  menuItem: {
-    marginHorizontal: 10,
-  },
-});
-
 export default Navbar;
-

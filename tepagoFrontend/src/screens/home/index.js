@@ -15,6 +15,9 @@ import {TouchableOpacity, ScrollView} from 'react-native';
 import OptionsDetail from '../../components/home/optionsDetail';
 import ListContacts from '../../components/home/listContacts';
 
+import Navbar from '../../components/navigation/navbar';
+
+
 function Home() {
   const [selectedContact, setSelectedContact] = useState(null);
 
@@ -50,6 +53,7 @@ function Home() {
           ) : null}
           {contacts ? <ListContacts contacts={contacts} handleContactPress={handleContactPress} /> : null}
         </VStack>
+        <Navbar/>
       </View>
     </>
   );
