@@ -2,6 +2,9 @@ import React, {useState} from 'react';
 import {TouchableOpacity, View} from 'react-native';
 import {Text, Box, HStack} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
+import Ionicons from 'react-native-vector-icons/Ionicons';
+
+import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -52,6 +55,8 @@ const Navbar = () => {
         <TouchableOpacity onPress={handleToggle}>
           <Box bgColor={'accent.100'} p={4} borderRadius={'full'}>
             <Icon name="home" size={30} color="black" />
+            <Ionicons name="bus" size={30} color="#000" />
+            <FontAwesome5 name={'comments'} size={30} />
           </Box>
         </TouchableOpacity>
       )}

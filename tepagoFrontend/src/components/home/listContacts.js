@@ -10,7 +10,7 @@ export default function ListContacts(props) {
       myRefs.current.forEach((ref) => {
         const styleObj = {
           borderWidth: 5,
-          borderColor: '#916400',
+          borderColor: '#1a1e3b',
         };
         ref?.setNativeProps({
           style: styleObj,
