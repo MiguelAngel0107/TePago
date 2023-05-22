@@ -17,8 +17,7 @@ import ListContacts from '../../components/home/listContacts';
 
 import Navbar from '../../components/navigation/navbar';
 
-
-function Home() {
+function Home({ navigation }) {
   const [selectedContact, setSelectedContact] = useState(null);
 
   const contacts = [
@@ -51,9 +50,14 @@ function Home() {
           {selectedContact ? (
             <OptionsDetail selectedContact={selectedContact} />
           ) : null}
-          {contacts ? <ListContacts contacts={contacts} handleContactPress={handleContactPress} /> : null}
+          {contacts ? (
+            <ListContacts
+              contacts={contacts}
+              handleContactPress={handleContactPress}
+            />
+          ) : null}
+          <Navbar navigation={navigation}/>
         </VStack>
-        <Navbar/>
       </View>
     </>
   );

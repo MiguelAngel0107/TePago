@@ -7,8 +7,7 @@ import {NativeBaseProvider} from 'native-base';
 import {theme} from './cutomizingTheme';
 
 import {NavigationContainer} from '@react-navigation/native';
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
-
+import {createNativeStackNavigator} from '@react-navigation/native-stack';
 
 import Home from './screens/home';
 import Register from './screens/auth/register';
@@ -22,9 +21,21 @@ function AppStart() {
       <NativeBaseProvider theme={theme}>
         <NavigationContainer>
           <Stack.Navigator initialRouteName="Home">
-            <Stack.Screen name="Home" component={Home} options={{ headerShown: false }} />
-            <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
-            <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+            <Stack.Screen
+              name="Home"
+              options={{headerShown: false}}>
+              {props => <Home {...props}  />}
+            </Stack.Screen>
+            <Stack.Screen
+              name="Register"
+              options={{headerShown: false}}>
+              {props => <Register {...props}  />}
+            </Stack.Screen>
+            <Stack.Screen
+              name="Login"
+              component={Login}
+              options={{headerShown: true}}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </NativeBaseProvider>

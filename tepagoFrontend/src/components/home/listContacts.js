@@ -44,7 +44,7 @@ export default function ListContacts(props) {
                 px={4}
                 py={2}>
                 <Text
-                  color="primary.100"
+                  color="textColor.100"
                   fontSize={24}
                   fontWeight={'light'}
                   textAlign={'center'}>
