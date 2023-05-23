@@ -25,7 +25,7 @@ function Home({navigation}) {
   });
 
   const contacts = [
-    {id: 0, name: 'Miguel Doe', phone: '123-456-7890'},
+    {id: 0, name: 'Miguel Egocheaga', phone: '123-456-7890'},
     {id: 1, name: 'Gabriel Smith', phone: '987-654-3210'},
     {id: 2, name: 'Juan Doe', phone: '123-456-7890'},
     {id: 3, name: 'Jane Smith', phone: '987-654-3210'},

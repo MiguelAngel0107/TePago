@@ -11,7 +11,7 @@ import {
 import Layout from '../../layout/layout';
 
 import {useDispatch} from 'react-redux';
-import {login} from '../../redux/actions/auth';
+import {login, load_tokens} from '../../redux/actions/auth';
 
 function Login({navigation}) {
   const dispatch = useDispatch();
@@ -31,7 +31,8 @@ function Login({navigation}) {
 
   const handleLogin = () => {
     console.log(data);
-    dispatch(login(email, password));
+    dispatch(load_tokens('set', 'access', 'PrimeraVariable'))
+    //dispatch(login(email, password));
   };
 
   return (
