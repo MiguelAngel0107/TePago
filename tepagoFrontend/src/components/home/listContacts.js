@@ -1,6 +1,7 @@
 import {Text, VStack, Box, Image, HStack, Flex} from 'native-base';
 import {TouchableOpacity, ScrollView} from 'react-native';
 import React, {useRef, useEffect} from 'react';
+import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default function ListContacts(props) {
   const myRefs = useRef([]);
@@ -10,7 +11,7 @@ export default function ListContacts(props) {
       myRefs.current.forEach((ref) => {
         const styleObj = {
           borderWidth: 5,
-          borderColor: '#1a1e3b',
+          borderColor: 'black',
         };
         ref?.setNativeProps({
           style: styleObj,
@@ -26,20 +27,18 @@ export default function ListContacts(props) {
       <VStack space={2} p={2}>
         {contacts.map((contact, index) => (
           <Flex key={contact.id} py={5} direction="row" alignItems="center">
-            <Box px={6}>
-              <Image
-                source={{
-                  uri: 'https://wallpaperaccess.com/full/317501.jpg',
-                }}
-                borderRadius={100}
-                alt="Alternate Text"
-                size="sm"
-              />
+            <Box
+              
+              bgColor={'bgColor.400'}
+              p={4}
+              borderRadius={'full'}
+              >
+              <Icon name="user" size={30} color="#00df00" />
             </Box>
             <TouchableOpacity onPress={() => props.handleContactPress(contact)}>
               <Box
                 ref={(ref) => (myRefs.current[index] = ref)}
-                bg="bgColor.200"
+                bg="bgColor.400"
                 borderRadius={8}
                 px={4}
                 py={2}>

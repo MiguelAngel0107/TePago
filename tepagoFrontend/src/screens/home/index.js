@@ -15,10 +15,14 @@ import {TouchableOpacity, ScrollView} from 'react-native';
 import OptionsDetail from '../../components/home/optionsDetail';
 import ListContacts from '../../components/home/listContacts';
 
-import Navbar from '../../components/navigation/navbar';
+import Layout from '../../layout/layout';
 
-function Home({ navigation }) {
-  const [selectedContact, setSelectedContact] = useState(null);
+function Home({navigation}) {
+  const [selectedContact, setSelectedContact] = useState({
+    id: 0,
+    name: '',
+    phone: '',
+  });
 
   const contacts = [
     {id: 0, name: 'Miguel Doe', phone: '123-456-7890'},
@@ -31,35 +35,34 @@ function Home({ navigation }) {
     {id: 7, name: 'Jane Smith', phone: '987-654-3210'},
     {id: 8, name: 'John Doe', phone: '123-456-7890'},
     {id: 9, name: 'Jane Smith', phone: '987-654-3210'},
-
-    // Add more contacts here...
   ];
 
   const handleContactPress = contact => {
     if (selectedContact && contact.id == selectedContact.id) {
-      setSelectedContact(null);
+      setSelectedContact({
+        id: 0,
+        name: '',
+        phone: '',
+      });
     } else {
       setSelectedContact(contact);
     }
   };
 
   return (
-    <>
-      <View style={{flex: 1}} bg="bgColor.300">
+    <Layout navigation={navigation}>
+      <View style={{flex: 1}} bg="bgColor.400">
         <VStack>
-          {selectedContact ? (
-            <OptionsDetail selectedContact={selectedContact} />
-          ) : null}
+          <OptionsDetail selectedContact={selectedContact} />
           {contacts ? (
             <ListContacts
               contacts={contacts}
               handleContactPress={handleContactPress}
             />
           ) : null}
-          <Navbar navigation={navigation}/>
         </VStack>
       </View>
-    </>
+    </Layout>
   );
 }
 

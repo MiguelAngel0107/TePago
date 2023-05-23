@@ -4,7 +4,7 @@ import {Text, Box, HStack} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 const Navbar = props => {
-  const [isOpen, setIsOpen] = useState(true);
+  const [isOpen, setIsOpen] = useState(false);
   const [rightValue, setRightValue] = useState(30);
   const hStackRef = useRef(null);
 
@@ -19,9 +19,10 @@ const Navbar = props => {
   };
 
   const handleNavigate = screenName => {
-    if (screenName === 'Home' && props.navigation.state.routeName === 'Home') {
+    if (screenName == 'exit') {
       handleToggle();
     } else {
+      handleToggle();
       props.navigation.navigate(screenName);
     }
   };
@@ -43,7 +44,7 @@ const Navbar = props => {
             onPress={() => handleNavigate(item.screen)}>
             <Box
               style={{borderColor: 'white', borderWidth: 2}}
-              bgColor={'accent.100'}
+              bgColor={'primary.200'}
               p={4}
               borderRadius={'full'}
               marginRight={index < menuItems.length - 1 ? 6 : 0}>
@@ -61,7 +62,11 @@ const Navbar = props => {
 
       {!isOpen && (
         <TouchableOpacity onPress={handleToggle}>
-          <Box bgColor={'accent.100'} p={4} borderRadius={'full'}>
+          <Box
+            style={{borderColor: 'white', borderWidth: 2}}
+            bgColor={'primary.200'}
+            p={4}
+            borderRadius={'full'}>
             <Icon name="home" size={30} color="black" />
           </Box>
         </TouchableOpacity>

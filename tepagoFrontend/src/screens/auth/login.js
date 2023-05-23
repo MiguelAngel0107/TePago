@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   Box,
   Heading,
@@ -8,46 +8,73 @@ import {
   Center,
   Text,
 } from 'native-base';
-function Login() {
+import Layout from '../../layout/layout';
+
+import {useDispatch} from 'react-redux';
+import {login} from '../../redux/actions/auth';
+
+function Login({navigation}) {
+  const dispatch = useDispatch();
   const [data, setData] = useState({
     email: '',
+    wallet_address: '',
     password: '',
   });
   const {email, password} = data;
+
+  const handleInputChange = (key, value) => {
+    setData(prevData => ({
+      ...prevData,
+      [key]: value,
+    }));
+  };
+
+  const handleLogin = () => {
+    console.log(data);
+    dispatch(login(email, password));
+  };
+
   return (
-    <Box flex={1} bg="bgColor.300" p={4}>
-      <Center flex={1} bg="bgColor.300">
-        <Heading color="textColor.100" mb={4}>
-          Login
-        </Heading>
-        <FormControl>
-          <FormControl.Label>
-            <Text color={'textColor.100'}>Email</Text>
-          </FormControl.Label>
-          <Input
-            placeholder="Enter your email"
-            value={email}
-            onChangeText={text => setData(text)}
-            color="textColor.100"
-          />
-        </FormControl>
-        <FormControl mt={4}>
-          <FormControl.Label color="textColor.100">
-            <Text color={'textColor.100'}>Password</Text>
-          </FormControl.Label>
-          <Input
-            placeholder="Enter your password"
-            secureTextEntry
-            value={password}
-            onChangeText={text => setData(text)}
-            color="textColor.100"
-          />
-        </FormControl>
-        <Button mt={4} colorScheme="primary" _text={{color: 'textColor.100'}}>
-          Register
-        </Button>
-      </Center>
-    </Box>
+    <Layout navigation={navigation}>
+      <Box flex={1} bg="bgColor.400" p={4}>
+        <Center flex={1} bg="bgColor.400">
+          <Heading color="textColor.100" mb={4}>
+            Login
+          </Heading>
+          <FormControl>
+            <FormControl.Label>
+              <Text color={'textColor.100'}>Email</Text>
+            </FormControl.Label>
+            <Input
+              placeholder="Enter your email"
+              value={email}
+              onChangeText={text => handleInputChange('email', text)}
+              color="textColor.100"
+            />
+          </FormControl>
+          <FormControl mt={4}>
+            <FormControl.Label color="textColor.100">
+              <Text color={'textColor.100'}>Password</Text>
+            </FormControl.Label>
+            <Input
+              placeholder="Enter your password"
+              secureTextEntry
+              value={password}
+              onChangeText={text => handleInputChange('password', text)}
+              color="textColor.100"
+            />
+          </FormControl>
+          <Button
+            mt={8}
+            px={10}
+            colorScheme="success"
+            _text={{color: 'textColor.100'}}
+            onPress={handleLogin}>
+            Login
+          </Button>
+        </Center>
+      </Box>
+    </Layout>
   );
 }
 

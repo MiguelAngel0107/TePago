@@ -1,27 +1,26 @@
 import {createSlice} from '@reduxjs/toolkit';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const initialState = {
-  access: AsyncStorage.getItem('access'),
-  refresh: AsyncStorage.getItem('refresh'),
-  isAuthenticated: null,
-  isMetaMask: null,
-};
-
-const loadInitialState = async () => {
+export const loadTokens = async () => {
   try {
     const access = await AsyncStorage.getItem('access');
     const refresh = await AsyncStorage.getItem('refresh');
 
     return {
-      ...initialState,
       access,
       refresh,
     };
   } catch (error) {
     console.log('Error al cargar el estado inicial:', error);
-    return initialState;
+    return null;
   }
+};
+
+const initialState = {
+  access: null,
+  refresh: null,
+  isAuthenticated: null,
+  isMetaMask: null,
 };
 
 const authSlice = createSlice({
@@ -85,6 +84,17 @@ const authSlice = createSlice({
       };
     },
   },
+  extraReducers: (builder) => {
+    builder
+      .addCase(loadTokens.fulfilled, (state, action) => {
+        const { access, refresh } = action.payload;
+        state.access = access;
+        state.refresh = refresh;
+      })
+      .addDefaultCase((state) => {
+        // Manejar otros casos de acciones aquí si es necesario
+      });
+  },
 });
 
 export const {
@@ -100,3 +110,12 @@ export const {
   METAMASK_SUCCESS,
 } = authSlice.actions;
 export default authSlice.reducer;
+
+// Cargar los tokens en el estado inicial
+export const initializeAuthState = () => async (dispatch) => {
+  const tokens = await dispatch(loadTokens());
+
+  if (tokens) {
+    dispatch(loadTokens.fulfilled(tokens));
+  }
+};

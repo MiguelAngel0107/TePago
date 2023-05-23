@@ -6,7 +6,7 @@ export default function Layout(props) {
   return (
     <>
       {props.children}
-      <Navbar />
+      <Navbar navigation={props.navigation} />
     </>
   );
 }

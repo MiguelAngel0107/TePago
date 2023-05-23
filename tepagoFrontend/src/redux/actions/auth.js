@@ -12,7 +12,7 @@ import {
 } from "../reducers/auth";
 import { setAlert } from "./alert";
 import axios from "axios";
-import APP_URL_SERVIDOR from "@/globals";
+import APP_URL_SERVIDOR from "../../global";
 
 import Web3 from "web3";
 const web3 = new Web3(Web3.givenProvider);

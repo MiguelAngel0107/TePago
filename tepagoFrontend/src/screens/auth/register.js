@@ -20,8 +20,8 @@ const Register = ({navigation}) => {
 
   return (
     <Layout navigation={navigation}>
-      <Box flex={1} bg="bgColor.300" p={4}>
-        <Center flex={1} bg="bgColor.300">
+      <Box flex={1} bg="bgColor.400" p={4}>
+        <Center flex={1} bg="bgColor.400">
           <Heading color="textColor.100" mb={4}>
             Register
           </Heading>
@@ -60,7 +60,11 @@ const Register = ({navigation}) => {
               color="textColor.100"
             />
           </FormControl>
-          <Button mt={4} colorScheme="primary" _text={{color: 'textColor.100'}}>
+          <Button
+            mt={8}
+            px={10}
+            colorScheme="success"
+            _text={{color: 'textColor.100'}}>
             Register
           </Button>
         </Center>

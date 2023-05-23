@@ -15,7 +15,7 @@ export default function OptionsDetail(props) {
         justifyContent: 'center',
         alignItems: 'center',
       }}
-      bg="bgColor.200">
+      bg="bgColor.300">
       <Text>{SelectedContact.name}</Text>
       <Text>{SelectedContact.phone}</Text>
       {/* Add more detailed information here */}
