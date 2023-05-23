@@ -11,14 +11,13 @@ import {
 import Layout from '../../layout/layout';
 
 import {useDispatch} from 'react-redux';
-import {login, load_tokens} from '../../redux/actions/auth';
+import {login} from '../../redux/actions/auth';
 
 function Login({navigation}) {
   const dispatch = useDispatch();
   const [data, setData] = useState({
-    email: '',
-    wallet_address: '',
-    password: '',
+    email: 'test1usuario@gmail.com',
+    password: 'contraseña1234',
   });
   const {email, password} = data;
 
@@ -30,9 +29,8 @@ function Login({navigation}) {
   };
 
   const handleLogin = () => {
-    console.log(data);
-    dispatch(load_tokens('set', 'access', 'PrimeraVariable'))
-    //dispatch(login(email, password));
+    //console.log(data);
+    dispatch(login(email, password));
   };
 
   return (

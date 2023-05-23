@@ -16,6 +16,7 @@ import axios from 'axios';
 
 import APP_URL_SERVIDOR from '../../global';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useSelector} from 'react-redux';
 
 import Web3 from 'web3';
 const web3 = new Web3(Web3.givenProvider);
@@ -81,7 +82,7 @@ export const load_tokens =
   };
 
 export const check_authenticated = () => async dispatch => {
-  if (localStorage.getItem('access')) {
+  if (useSelector(state => state.auth.access)) {
     const config = {
       headers: {
         Accept: 'application/json',
@@ -89,7 +90,7 @@ export const check_authenticated = () => async dispatch => {
       },
     };
     const body = JSON.stringify({
-      token: localStorage.getItem('access'),
+      token: useSelector(state => state.auth.access),
     });
 
     try {
@@ -149,42 +150,51 @@ export const signup =
     }
   };
 
-export const login = (email, wallet_address, password) => async dispatch => {
-  const config = {
-    headers: {
-      'Content-Type': 'application/json',
-    },
+export const login =
+  (email, /*wallet_address,*/ password) => async dispatch => {
+    const config = {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    };
+
+    const body = JSON.stringify({
+      email,
+      /*wallet_address,*/
+      password,
+    });
+
+    //console.log(body);
+
+    try {
+      const res = await axios.post(
+        `http://localhost:8000/auth/jwt/create/`,
+        body,
+        config,
+      );
+
+      if (res.status === 200) {
+        console.log(res.data);
+
+        dispatch(load_tokens('set', 'access', res.data.access));
+        dispatch(load_tokens('set', 'refresh', res.data.refresh));
+
+        dispatch(LOGIN_SUCCESS(res.data));
+
+        dispatch(setAlert('Inicio de sesión con éxito', 'green'));
+      } else {
+        dispatch(LOGIN_FAIL());
+
+        dispatch(setAlert('Error al iniciar sesion', 'red'));
+      }
+    } catch (err) {
+      dispatch(LOGIN_FAIL());
+      dispatch(setAlert('Error al iniciar sesion. Intenta mas tarde', 'red'));
+    }
   };
 
-  const body = JSON.stringify({
-    email,
-    wallet_address,
-    password,
-  });
-  console.log(body);
-  try {
-    const res = await axios.post(
-      `${APP_URL_SERVIDOR}/api/token/`,
-      body,
-      config,
-    );
-
-    if (res.status === 200) {
-      dispatch(LOGIN_SUCCESS(res.data));
-      dispatch(setAlert('Inicio de sesión con éxito', 'green'));
-    } else {
-      dispatch(LOGIN_FAIL());
-
-      dispatch(setAlert('Error al iniciar sesion', 'red'));
-    }
-  } catch (err) {
-    dispatch(LOGIN_FAIL());
-    dispatch(setAlert('Error al iniciar sesion. Intenta mas tarde', 'red'));
-  }
-};
-
 export const refresh = () => async dispatch => {
-  if (localStorage.getItem('refresh')) {
+  if (useSelector(state => state.auth.refresh)) {
     const config = {
       headers: {
         Accept: 'application/json',
@@ -192,7 +202,7 @@ export const refresh = () => async dispatch => {
       },
     };
     const body = JSON.stringify({
-      refresh: localStorage.getItem('refresh'),
+      refresh: useSelector(state => state.auth.refresh),
     });
 
     try {

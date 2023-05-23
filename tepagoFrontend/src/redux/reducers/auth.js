@@ -1,5 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import {load_tokens} from '../actions/auth';
+import {useDispatch, useSelector} from 'react-redux';
 
 const initialState = {
   access: null,
@@ -27,6 +28,8 @@ const authSlice = createSlice({
       };
     },
     AUTHENTICATED_FAIL(state, action) {
+      dispatch(load_tokens('remove', 'access'));
+      dispatch(load_tokens('remove', 'refresh'));
       //AsyncStorage.removeItem('access');
       //AsyncStorage.removeItem('refresh');
       return {
@@ -40,26 +43,32 @@ const authSlice = createSlice({
     SIGNUP_FAIL(state, action) {},
     LOGIN_SUCCESS(state, action) {
       let payload = action.payload;
+      //dispatch(load_tokens('set', 'access', payload.access));
+      //dispatch(load_tokens('set', 'refresh', payload.refresh));
+      
       //AsyncStorage.setItem('access', payload.access);
       //AsyncStorage.setItem('refresh', payload.refresh);
       return {
         ...state,
         isAuthenticated: true,
-        access: AsyncStorage.getItem('access'),
-        refresh: AsyncStorage.getItem('refresh'),
+        //access: AsyncStorage.getItem('access'),
+        //refresh: AsyncStorage.getItem('refresh'),
       };
     },
     LOGIN_FAIL(state, action) {},
     REFRESH_SUCCESS(state, action) {
       let payload = action.payload;
+      dispatch(load_tokens('set', 'access', payload.access));
       //AsyncStorage.setItem('access', payload.access);
       return {
         ...state,
-        access: AsyncStorage.getItem('access'),
+        //access: AsyncStorage.getItem('access'),
       };
     },
     REFRESH_FAIL(state, action) {},
     LOGOUT(state, action) {
+      dispatch(load_tokens('remove', 'access'));
+      dispatch(load_tokens('remove', 'refresh'));
       //AsyncStorage.removeItem('access');
       //AsyncStorage.removeItem('refresh');
       return {
@@ -77,17 +86,6 @@ const authSlice = createSlice({
       };
     },
   },
-  //extraReducers: builder => {
-  //  builder
-  //    .addCase(loadTokens.fulfilled, (state, action) => {
-  //      const {access, refresh} = action.payload;
-  //      state.access = access;
-  //      state.refresh = refresh;
-  //    })
-  //    .addDefaultCase(state => {
-  //      // Manejar otros casos de acciones aquí si es necesario
-  //    });
-  //},
 });
 
 export const {
