@@ -1,6 +1,4 @@
 import {createSlice} from '@reduxjs/toolkit';
-import {load_tokens} from '../actions/auth';
-
 
 const initialState = {
   access: null,

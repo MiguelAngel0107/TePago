@@ -26,11 +26,12 @@ APPS_DEFAULT = [
 ]
 
 PRIMARY_APPS = [
-    'apps.user'
+    'apps.user',
+    'apps.contacts'
 ]
 
 SECONDARY_APPS = [
-
+    'apps.products'
 ]
 
 TERTIARY_APPS = [
