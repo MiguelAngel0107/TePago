@@ -74,11 +74,11 @@ DJOSER = {
     'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True,
     'SEND_CONFIRMATION_EMAIL': True,
     'SET_USERNAME_RETYPE': True,
-    'PASSWORD_RESET_CONFIRM_URL': 'password/reset/confirm/{uid}/{token}',
+    'PASSWORD_RESET_CONFIRM_URL': 'user/password/reset/confirm/{uid}/{token}',
     'SET_PASSWORD_RETYPE': True,
     'PASSWORD_RESET_CONFIRM_RETYPE': True,
-    'USERNAME_RESET_CONFIRM_URL': 'email/reset/confirm/{uid}/{token}',
-    'ACTIVATION_URL': 'activate/{uid}/{token}',
+    'USERNAME_RESET_CONFIRM_URL': 'user/email/reset/confirm/{uid}/{token}',
+    'ACTIVATION_URL': 'user/activate/{uid}/{token}',
     'SEND_ACTIVATION_EMAIL': True,
     'SOCIAL_AUTH_TOKEN_STRATEGY': 'djoser.social.token.jwt.TokenStrategy',
     'SOCIAL_AUTH_ALLOWED_REDIRECT_URIS': ['http://localhost:8000/google', 'http://localhost:8000/facebook'],
@@ -169,19 +169,21 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-CORS_ALLOWED_ORIGINS = [
-    'http://localhost:8081',
-    'http://localhost:8000',
-    'http://127.0.0.1:8000',
-    'http://127.0.0.1:8081',
-]
+CORS_ALLOW_ALL_ORIGINS = True
 
-CSRF_TRUSTED_ORIGINS = [
-    'http://localhost:8081',
-    'http://localhost:8000',
-    'http://127.0.0.1:8000',
-    'http://127.0.0.1:8081',
-]
+#CORS_ALLOWED_ORIGINS = [
+#    'http://localhost:8081',
+#    'http://localhost:8000',
+#    'http://127.0.0.1:8000',
+#    'http://127.0.0.1:8081',
+#]
+
+#CSRF_TRUSTED_ORIGINS = [
+#    'http://localhost:8081',
+#    'http://localhost:8000',
+#    'http://127.0.0.1:8000',
+#    'http://127.0.0.1:8081',
+#]
 
 # Internationalization
 # https://docs.djangoproject.com/en/3.2/topics/i18n/

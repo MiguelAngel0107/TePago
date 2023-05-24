@@ -16,7 +16,6 @@ import axios from 'axios';
 
 import APP_URL_SERVIDOR from '../../global';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useSelector} from 'react-redux';
 
 import Web3 from 'web3';
 const web3 = new Web3(Web3.givenProvider);
@@ -24,7 +23,7 @@ const web3 = new Web3(Web3.givenProvider);
 /**
  * Carga, guarda o elimina tokens en AsyncStorage.
  *
- * @param {string} metodo - El método a ejecutar: 'get', 'set' o 'remove'.
+ * @param {string} metodo - El método a ejecutar: 'get', 'set', 'remove' o 'all'.
  * @param {string} key - La clave del token en AsyncStorage.
  * @param {string|null} value - El valor del token (solo para el método 'set').
  * @returns {Function} - Una función async que realiza las operaciones correspondientes y dispatchea la acción LOAD_TOKENS.
@@ -79,10 +78,19 @@ export const load_tokens =
         console.log('Error al cargar el estado inicial:', error);
       }
     }
+    if (metodo == 'all') {
+      try {
+        const keys = await AsyncStorage.getAllKeys();
+        console.log(keys);
+      } catch (error) {
+        console.log('Error al obtener las claves de AsyncStorage:', error);
+      }
+    }
   };
 
 export const check_authenticated = () => async dispatch => {
-  if (useSelector(state => state.auth.access)) {
+  const token = await AsyncStorage.getItem('access');
+  if (token) {
     const config = {
       headers: {
         Accept: 'application/json',
@@ -90,12 +98,12 @@ export const check_authenticated = () => async dispatch => {
       },
     };
     const body = JSON.stringify({
-      token: useSelector(state => state.auth.access),
+      token: token,
     });
 
     try {
       const res = await axios.post(
-        `${APP_URL_SERVIDOR}/api/token/verify/`,
+        `${APP_URL_SERVIDOR}/auth/jwt/verify/`,
         body,
         config,
       );
@@ -103,12 +111,18 @@ export const check_authenticated = () => async dispatch => {
       if (res.status === 200) {
         dispatch(AUTHENTICATED_SUCCESS(null));
       } else {
+        dispatch(load_tokens('remove', 'access'));
+        dispatch(load_tokens('remove', 'refresh'));
         dispatch(AUTHENTICATED_FAIL(null));
       }
     } catch (err) {
+      dispatch(load_tokens('remove', 'access'));
+      dispatch(load_tokens('remove', 'refresh'));
       dispatch(AUTHENTICATED_FAIL(null));
     }
   } else {
+    dispatch(load_tokens('remove', 'access'));
+    dispatch(load_tokens('remove', 'refresh'));
     dispatch(AUTHENTICATED_FAIL(null));
   }
 };
@@ -130,7 +144,7 @@ export const signup =
     //console.log(body);
     try {
       const res = await axios.post(
-        `${APP_URL_SERVIDOR}/user/register/`,
+        `${APP_URL_SERVIDOR}/auth/users/`,
         body,
         config,
       );
@@ -164,23 +178,17 @@ export const login =
       password,
     });
 
-    //console.log(body);
-
     try {
       const res = await axios.post(
-        `http://localhost:8000/auth/jwt/create/`,
+        `${APP_URL_SERVIDOR}/auth/jwt/create/`,
         body,
         config,
       );
 
       if (res.status === 200) {
-        console.log(res.data);
-
         dispatch(load_tokens('set', 'access', res.data.access));
         dispatch(load_tokens('set', 'refresh', res.data.refresh));
-
         dispatch(LOGIN_SUCCESS(res.data));
-
         dispatch(setAlert('Inicio de sesión con éxito', 'green'));
       } else {
         dispatch(LOGIN_FAIL());
@@ -194,7 +202,8 @@ export const login =
   };
 
 export const refresh = () => async dispatch => {
-  if (useSelector(state => state.auth.refresh)) {
+  const token = await AsyncStorage.getItem('refresh');
+  if (token) {
     const config = {
       headers: {
         Accept: 'application/json',
@@ -202,17 +211,18 @@ export const refresh = () => async dispatch => {
       },
     };
     const body = JSON.stringify({
-      refresh: useSelector(state => state.auth.refresh),
+      refresh: token,
     });
 
     try {
       const res = await axios.post(
-        `${APP_URL_SERVIDOR}/api/token/refresh/`,
+        `${APP_URL_SERVIDOR}/auth/jwt/refresh/`,
         body,
         config,
       );
 
       if (res.status === 200) {
+        dispatch(load_tokens('set', 'access', res.data.access));
         dispatch(REFRESH_SUCCESS(res.data));
       } else {
         dispatch(REFRESH_FAIL());
@@ -227,6 +237,8 @@ export const refresh = () => async dispatch => {
 
 export const logout = () => dispatch => {
   console.log('cerrado actions');
+  dispatch(load_tokens('remove', 'access'));
+  dispatch(load_tokens('remove', 'refresh'));
   dispatch(LOGOUT());
   dispatch(setAlert('Succesfully logged out', 'green'));
 };

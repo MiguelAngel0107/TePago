@@ -3,6 +3,8 @@ from rest_framework.response import Response
 from rest_framework import status
 from social_django.utils import psa
 
+from django.http import HttpResponse
+
 class GoogleAuthAPIView(APIView):
     @psa()
     def post(self, request):
@@ -21,3 +23,9 @@ class GoogleAuthAPIView(APIView):
             return Response({'detail': 'Error al autenticar con Google.'}, status=status.HTTP_400_BAD_REQUEST)
 
         return Response({'detail': 'Error al autenticar con Google.'}, status=status.HTTP_400_BAD_REQUEST)
+
+
+def ActivateAccount(request, uid, token):
+    # Realiza las operaciones que desees con las cadenas de texto
+    response = f"Parámetros recibidos: {uid}, {token}"
+    return HttpResponse(response)

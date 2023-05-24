@@ -13,11 +13,13 @@ import Layout from '../../layout/layout';
 import {useDispatch} from 'react-redux';
 import {login} from '../../redux/actions/auth';
 
+import axios from 'axios';
+
 function Login({navigation}) {
   const dispatch = useDispatch();
   const [data, setData] = useState({
-    email: 'test1usuario@gmail.com',
-    password: 'contraseña1234',
+    email: '',
+    password: '',
   });
   const {email, password} = data;
 
@@ -29,7 +31,6 @@ function Login({navigation}) {
   };
 
   const handleLogin = () => {
-    //console.log(data);
     dispatch(login(email, password));
   };
 

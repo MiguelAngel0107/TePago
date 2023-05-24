@@ -1,6 +1,6 @@
 import {createSlice} from '@reduxjs/toolkit';
 import {load_tokens} from '../actions/auth';
-import {useDispatch, useSelector} from 'react-redux';
+
 
 const initialState = {
   access: null,
@@ -15,7 +15,6 @@ const authSlice = createSlice({
   reducers: {
     LOAD_TOKENS(state, action) {
       let payload = action.payload;
-      console.log(payload);
       return {
         ...state,
         ...payload,
@@ -28,10 +27,6 @@ const authSlice = createSlice({
       };
     },
     AUTHENTICATED_FAIL(state, action) {
-      dispatch(load_tokens('remove', 'access'));
-      dispatch(load_tokens('remove', 'refresh'));
-      //AsyncStorage.removeItem('access');
-      //AsyncStorage.removeItem('refresh');
       return {
         ...state,
         isAuthenticated: false,
@@ -43,11 +38,6 @@ const authSlice = createSlice({
     SIGNUP_FAIL(state, action) {},
     LOGIN_SUCCESS(state, action) {
       let payload = action.payload;
-      //dispatch(load_tokens('set', 'access', payload.access));
-      //dispatch(load_tokens('set', 'refresh', payload.refresh));
-      
-      //AsyncStorage.setItem('access', payload.access);
-      //AsyncStorage.setItem('refresh', payload.refresh);
       return {
         ...state,
         isAuthenticated: true,
@@ -58,8 +48,6 @@ const authSlice = createSlice({
     LOGIN_FAIL(state, action) {},
     REFRESH_SUCCESS(state, action) {
       let payload = action.payload;
-      dispatch(load_tokens('set', 'access', payload.access));
-      //AsyncStorage.setItem('access', payload.access);
       return {
         ...state,
         //access: AsyncStorage.getItem('access'),
@@ -67,10 +55,6 @@ const authSlice = createSlice({
     },
     REFRESH_FAIL(state, action) {},
     LOGOUT(state, action) {
-      dispatch(load_tokens('remove', 'access'));
-      dispatch(load_tokens('remove', 'refresh'));
-      //AsyncStorage.removeItem('access');
-      //AsyncStorage.removeItem('refresh');
       return {
         ...state,
         access: null,
