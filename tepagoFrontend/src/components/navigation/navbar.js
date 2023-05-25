@@ -22,15 +22,26 @@ const Navbar = props => {
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
-    setIsOpenV2(!isOpen);
+  };
+
+  const handleToggle2 = () => {
+    setIsOpenV2(!isOpenV2);
   };
 
   const handleNavigate = screenName => {
-    if (screenName === 'exit') {
-      handleToggle();
-    } else {
-      handleToggle();
-      props.navigation.navigate(screenName);
+    switch (screenName) {
+      case 'exit':
+        handleToggle();
+        break;
+      case 'exit2':
+        handleToggle2();
+        break;
+      default:
+        console.log('Esto no se debería activar');
+        setIsOpen(false);
+        setIsOpenV2(false);
+        props.navigation.navigate(screenName);
+        break;
     }
   };
 
@@ -70,13 +81,12 @@ const Navbar = props => {
       {icon: 'home', screen: 'Home'},
       {icon: 'home', screen: 'Login'},
       {icon: 'user-plus', screen: 'Register'},
-      {icon: 'remove', screen: 'exit'},
+      {icon: 'remove', screen: 'exit2'},
     ];
     return (
       <VStack
         ref={hStackRef}
         alignItems={'flex-end'}
-        background={'amber.800'}
         justifyContent={'flex-end'}>
         {menuItems.map((item, index) => (
           <TouchableOpacity
@@ -85,7 +95,7 @@ const Navbar = props => {
             <HStack>
               <Box
                 style={{borderColor: 'white', borderWidth: 2}}
-                bgColor={'textColor.100'}
+                bgColor={'primary.200'}
                 p={4}
                 borderRadius={'full'}
                 marginBottom={index < menuItems.length - 1 ? 6 : 0}>
@@ -105,7 +115,7 @@ const Navbar = props => {
         return gestureState.dx < -50 || gestureState.dy < -50;
       },
       onPanResponderGrant: () => {
-        setIsOpen(true);
+        //setIsOpen(true);
       },
       onPanResponderMove: (evt, gestureState) => {
         // Resto del código para el desplazamiento horizontal y vertical
@@ -132,18 +142,17 @@ const Navbar = props => {
       {isOpenV2 && fastAccionsItems()}
       {isOpen && shortMenuItems()}
 
-      {!isOpen ||
-        (!isOpenV2 && (
-          <TouchableOpacity>
-            <Box
-              style={{borderColor: 'white', borderWidth: 2}}
-              bgColor={'primary.200'}
-              p={4}
-              borderRadius={'full'}>
-              <Icon name="plus" size={30} color="black" />
-            </Box>
-          </TouchableOpacity>
-        ))}
+      {!isOpen && !isOpenV2 && (
+        <TouchableOpacity onPress={handleToggle2}>
+          <Box
+            style={{borderColor: 'white', borderWidth: 2}}
+            bgColor={'primary.200'}
+            p={4}
+            borderRadius={'full'}>
+            <Icon name="plus" size={30} color="black" />
+          </Box>
+        </TouchableOpacity>
+      )}
     </Box>
   );
 };
