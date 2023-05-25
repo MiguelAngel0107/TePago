@@ -15,10 +15,6 @@ const Navbar = props => {
   const hStackRef = useRef(null);
 
   useEffect(() => {
-    console.log(isOpenV2);
-  }, [isOpenV2]);
-
-  useEffect(() => {
     const screenWidth = Dimensions.get('window').width;
     const dynamicRightValue = Math.round((screenWidth - 324) / 2);
     setRightValue(dynamicRightValue);
@@ -26,14 +22,11 @@ const Navbar = props => {
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
-  };
-
-  const handleToggleV2 = () => {
-    setIsOpenV2(!isOpenV2);
+    setIsOpenV2(!isOpen);
   };
 
   const handleNavigate = screenName => {
-    if (screenName == 'exit') {
+    if (screenName === 'exit') {
       handleToggle();
     } else {
       handleToggle();
@@ -80,7 +73,11 @@ const Navbar = props => {
       {icon: 'remove', screen: 'exit'},
     ];
     return (
-      <VStack ref={hStackRef} alignItems={'flex-end'} background={'amber.800'}>
+      <VStack
+        ref={hStackRef}
+        alignItems={'flex-end'}
+        background={'amber.800'}
+        justifyContent={'flex-end'}>
         {menuItems.map((item, index) => (
           <TouchableOpacity
             key={index}
@@ -100,20 +97,21 @@ const Navbar = props => {
       </VStack>
     );
   };
-  
+
   const panResponder = useRef(
     PanResponder.create({
       onMoveShouldSetPanResponder: (evt, gestureState) => {
         // Verificar si el desplazamiento es suficiente en cualquier dirección
-        return Math.abs(gestureState.dx) > 50 || Math.abs(gestureState.dy) > 50;
+        return gestureState.dx < -50 || gestureState.dy < -50;
       },
       onPanResponderGrant: () => {
-        // Código para cuando se inicia el gesto
+        setIsOpen(true);
       },
       onPanResponderMove: (evt, gestureState) => {
         // Resto del código para el desplazamiento horizontal y vertical
         if (gestureState.dx < -50) {
           setIsOpen(true);
+          setIsOpenV2(false);
         } else if (gestureState.dy < -50) {
           setIsOpen(false);
           setIsOpenV2(true);
@@ -126,21 +124,26 @@ const Navbar = props => {
   ).current;
 
   return (
-    <Box position="absolute" bottom={10} right={`${rightValue}px`}>
+    <Box
+      position="absolute"
+      bottom={10}
+      right={`${rightValue}px`}
+      {...panResponder.panHandlers}>
       {isOpenV2 && fastAccionsItems()}
       {isOpen && shortMenuItems()}
 
-      {!isOpen && (
-        <TouchableOpacity {...panResponder.panHandlers}>
-          <Box
-            style={{borderColor: 'white', borderWidth: 2}}
-            bgColor={'primary.200'}
-            p={4}
-            borderRadius={'full'}>
-            <Icon name="plus" size={30} color="black" />
-          </Box>
-        </TouchableOpacity>
-      )}
+      {!isOpen ||
+        (!isOpenV2 && (
+          <TouchableOpacity>
+            <Box
+              style={{borderColor: 'white', borderWidth: 2}}
+              bgColor={'primary.200'}
+              p={4}
+              borderRadius={'full'}>
+              <Icon name="plus" size={30} color="black" />
+            </Box>
+          </TouchableOpacity>
+        ))}
     </Box>
   );
 };
