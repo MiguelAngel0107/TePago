@@ -23,14 +23,14 @@ function AppStart() {
           <Stack.Navigator initialRouteName="Home">
             <Stack.Screen
               name="Home"
-              options={{headerShown: false}}>
-              {props => <Home {...props}  />}
-            </Stack.Screen>
+              component={Home}
+              options={{headerShown: false}}
+            />
             <Stack.Screen
               name="Register"
-              options={{headerShown: false}}>
-              {props => <Register {...props}  />}
-            </Stack.Screen>
+              component={Register}
+              options={{headerShown: false}}
+            />
             <Stack.Screen
               name="Login"
               component={Login}
