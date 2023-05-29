@@ -21,9 +21,15 @@ export const theme = extendTheme({
       300: '#0B0F2B',
     },
 
+
+    //primary: {
+    //  100: '#00FF00', // Verde claro
+    //  200: '#00df00', // Verde bosque
+    //  300: '#009700', // Verde oscuro
+    //},
     primary: {
-      100: '#00FF00', // Verde claro
-      200: '#00df00', // Verde bosque
+      100: '#00df00', // Verde claro
+      200: '#009700', // Verde bosque
       300: '#009700', // Verde oscuro
     },
     accent: {

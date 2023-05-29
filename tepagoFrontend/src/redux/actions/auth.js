@@ -178,6 +178,7 @@ export const login =
       password,
     });
 
+    //console.log(body);
     try {
       const res = await axios.post(
         `${APP_URL_SERVIDOR}/auth/jwt/create/`,

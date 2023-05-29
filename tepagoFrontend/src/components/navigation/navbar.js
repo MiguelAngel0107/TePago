@@ -8,10 +8,16 @@ import {
 import {Text, Box, HStack, VStack} from 'native-base';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
+import AddContact from '../modales/addContact';
+import AddProduct from '../modales/addProduct';
+
 const Navbar = props => {
   const [isOpen, setIsOpen] = useState(false);
   const [isOpenV2, setIsOpenV2] = useState(false);
   const [rightValue, setRightValue] = useState(30);
+
+  const [openModal, setOpenModal] = useState(false);
+  const [openModal2, setOpenModal2] = useState(false);
   const hStackRef = useRef(null);
 
   useEffect(() => {
@@ -19,6 +25,14 @@ const Navbar = props => {
     const dynamicRightValue = Math.round((screenWidth - 324) / 2);
     setRightValue(dynamicRightValue);
   }, []);
+
+  const closeModal = () => {
+    setOpenModal(false);
+  };
+
+  const closeModal2 = () => {
+    setOpenModal2(false);
+  };
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
@@ -29,18 +43,25 @@ const Navbar = props => {
   };
 
   const handleNavigate = screenName => {
-    switch (screenName) {
-      case 'exit':
-        handleToggle();
+    if (screenName == 'exit') {
+      setIsOpen(false);
+      setIsOpenV2(false);
+    } else {
+      props.navigation.navigate(screenName);
+    }
+  };
+
+  const handleModal = modals => {
+    switch (modals) {
+      case 'add_contact':
+        setOpenModal(true);
         break;
-      case 'exit2':
-        handleToggle2();
+      case 'add_product':
+        setOpenModal2(true);
         break;
       default:
-        console.log('Esto no se debería activar');
         setIsOpen(false);
         setIsOpenV2(false);
-        props.navigation.navigate(screenName);
         break;
     }
   };
@@ -61,12 +82,12 @@ const Navbar = props => {
             key={index}
             onPress={() => handleNavigate(item.screen)}>
             <Box
-              style={{borderColor: 'white', borderWidth: 2}}
+              style={{borderColor: '#009700', borderWidth: 2}}
               bgColor={'primary.200'}
               p={4}
               borderRadius={'full'}
               marginRight={index < menuItems.length - 1 ? 6 : 0}>
-              <Icon name={item.icon} size={30} color="black" />
+              <Icon name={item.icon} size={30} color="white" />
             </Box>
           </TouchableOpacity>
         ))}
@@ -78,10 +99,10 @@ const Navbar = props => {
     const menuItems = [
       //{icon: 'check', screen: 'CPNT1'},
       //{icon: 'heart', screen: 'CPNT13'},
-      {icon: 'home', screen: 'Home'},
-      {icon: 'home', screen: 'Login'},
-      {icon: 'user-plus', screen: 'Register'},
-      {icon: 'remove', screen: 'exit2'},
+      {icon: 'list-alt', modals: 'exit2'},
+      {icon: 'cart-plus', modals: 'add_product'},
+      {icon: 'user-plus', modals: 'add_contact'},
+      {icon: 'remove', modals: 'exit'},
     ];
     return (
       <VStack
@@ -91,15 +112,15 @@ const Navbar = props => {
         {menuItems.map((item, index) => (
           <TouchableOpacity
             key={index}
-            onPress={() => handleNavigate(item.screen)}>
+            onPress={() => handleModal(item.modals)}>
             <HStack>
               <Box
-                style={{borderColor: 'white', borderWidth: 2}}
+                style={{borderColor: '#009700', borderWidth: 2}}
                 bgColor={'primary.200'}
                 p={4}
                 borderRadius={'full'}
                 marginBottom={index < menuItems.length - 1 ? 6 : 0}>
-                <Icon name={item.icon} size={30} color="black" />
+                <Icon name={item.icon} size={30} color="white" />
               </Box>
             </HStack>
           </TouchableOpacity>
@@ -145,14 +166,17 @@ const Navbar = props => {
       {!isOpen && !isOpenV2 && (
         <TouchableOpacity onPress={handleToggle2}>
           <Box
-            style={{borderColor: 'white', borderWidth: 2}}
+            style={{borderColor: '#009700', borderWidth: 2}}
             bgColor={'primary.200'}
             p={4}
             borderRadius={'full'}>
-            <Icon name="plus" size={30} color="black" />
+            <Icon name="plus" size={30} color="white" />
           </Box>
         </TouchableOpacity>
       )}
+
+      <AddContact isOpen={openModal} closeDialog={closeModal} />
+      <AddProduct isOpen={openModal2} closeDialog={closeModal2} />
     </Box>
   );
 };

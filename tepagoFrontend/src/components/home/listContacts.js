@@ -33,7 +33,7 @@ export default function ListContacts(props) {
               p={4}
               borderRadius={'full'}
               >
-              <Icon name="user" size={30} color="#00df00" />
+              <Icon name="user" size={30} color="#009700" />
             </Box>
             <TouchableOpacity onPress={() => props.handleContactPress(contact)}>
               <Box

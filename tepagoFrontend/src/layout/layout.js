@@ -34,9 +34,10 @@ export default function Layout(props) {
   const drawer = useRef(null);
 
   useEffect(() => {
+    dispatch(load_tokens('get', 'access'));
+    dispatch(load_tokens('get', 'refresh'));
     dispatch(refresh());
     dispatch(check_authenticated());
-    //dispatch(load_tokens('all'))
   }, []);
 
   const alert = useSelector(state => state.Alert.alert);

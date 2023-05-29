@@ -26,6 +26,12 @@ urlpatterns = [
     # User
     path('user/', include('apps.user.urls')),
 
+    # Contacts
+    path('contacts/', include('apps.contacts.urls')),
+
+    # Products
+    path('products/', include('apps.products.urls')),
+
     # Documentacion y Administracion
     path('docs/', schema_view.with_ui('swagger', cache_timeout=0), name='schema-swagger-ui'),
     path('swagger<str:format>', schema_view.without_ui(cache_timeout=0), name='schema-json'),
