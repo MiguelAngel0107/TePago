@@ -1,5 +1,6 @@
 import {useDispatch, useSelector} from 'react-redux';
 import {check_authenticated, refresh, load_tokens} from '../redux/actions/auth';
+import { get_contacts } from '../redux/actions/contacts';
 import {
   Button,
   DrawerLayoutAndroid,
@@ -30,6 +31,9 @@ const styles = StyleSheet.create({
 });
 
 export default function Layout(props) {
+  const isAuthenticated = useSelector(state => state.Auth.isAuthenticated);
+  const alert = useSelector(state => state.Alert.alert);
+
   const dispatch = useDispatch();
   const drawer = useRef(null);
 
@@ -38,9 +42,15 @@ export default function Layout(props) {
     dispatch(load_tokens('get', 'refresh'));
     dispatch(refresh());
     dispatch(check_authenticated());
+    dispatch(get_contacts())
+    //dispatch(load_tokens('all'));
   }, []);
 
-  const alert = useSelector(state => state.Alert.alert);
+  useEffect(() => {
+    if (!isAuthenticated) {
+      props.navigation.navigate('Init');
+    }
+  }, [isAuthenticated]);
 
   const navigationView = () => (
     <View style={[styles.container, styles.navigationContainer]}>
@@ -60,7 +70,8 @@ export default function Layout(props) {
       renderNavigationView={navigationView}>
       {props.children}
       {alert && <Alert message={alert.msg} type={alert.alertType} />}
-      <Navbar navigation={props.navigation} />
+
+      {isAuthenticated && <Navbar navigation={props.navigation} />}
     </DrawerLayoutAndroid>
   );
 }

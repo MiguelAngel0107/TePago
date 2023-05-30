@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {
   Text,
@@ -16,33 +16,42 @@ import OptionsDetail from '../../components/home/optionsDetail';
 import ListContacts from '../../components/home/listContacts';
 
 import Layout from '../../layout/layout';
+import {useSelector} from 'react-redux';
 
 function Home({navigation}) {
+  const contacts = useSelector(state => state.Contacts.contacts);
+
   const [selectedContact, setSelectedContact] = useState({
-    id: 0,
-    name: '',
-    phone: '',
+    id: null,
+    nombre: '',
+    telefono: '',
   });
 
-  const contacts = [
-    {id: 0, name: 'Miguel Egocheaga', phone: '123-456-7890'},
-    {id: 1, name: 'Gabriel Smith', phone: '987-654-3210'},
-    {id: 2, name: 'Juan Doe', phone: '123-456-7890'},
-    {id: 3, name: 'Jane Smith', phone: '987-654-3210'},
-    {id: 4, name: 'John Doe', phone: '123-456-7890'},
-    {id: 5, name: 'Jane Smith', phone: '987-654-3210'},
-    {id: 6, name: 'John Doe', phone: '123-456-7890'},
-    {id: 7, name: 'Jane Smith', phone: '987-654-3210'},
-    {id: 8, name: 'John Doe', phone: '123-456-7890'},
-    {id: 9, name: 'Jane Smith', phone: '987-654-3210'},
-  ];
+  const [listContacts, setListContacts] = useState([
+    {id: 0, nombre: 'Miguel Egocheaga', telefono: '123-456-7890'},
+    {id: 1, nombre: 'Gabriel Smith', telefono: '987-654-3210'},
+    {id: 2, nombre: 'Juan Doe', telefono: '123-456-7890'},
+    {id: 3, nombre: 'Jane Smith', telefono: '987-654-3210'},
+    {id: 4, nombre: 'John Doe', telefono: '123-456-7890'},
+    {id: 5, nombre: 'Jane Smith', telefono: '987-654-3210'},
+    {id: 6, nombre: 'John Doe', telefono: '123-456-7890'},
+    {id: 7, nombre: 'Jane Smith', telefono: '987-654-3210'},
+    {id: 8, nombre: 'John Doe', telefono: '123-456-7890'},
+    {id: 9, nombre: 'Jane Smith', telefono: '987-654-3210'},
+  ]);
+
+  useEffect(() => {
+    if (contacts) {
+      setListContacts(contacts);
+    }
+  }, [contacts]);
 
   const handleContactPress = contact => {
     if (selectedContact && contact.id == selectedContact.id) {
       setSelectedContact({
-        id: 0,
-        name: '',
-        phone: '',
+        id: null,
+        nombre: '',
+        telefono: '',
       });
     } else {
       setSelectedContact(contact);
@@ -54,9 +63,9 @@ function Home({navigation}) {
       <View style={{flex: 1}} bg="bgColor.400">
         <VStack>
           <OptionsDetail selectedContact={selectedContact} />
-          {contacts ? (
+          {listContacts ? (
             <ListContacts
-              contacts={contacts}
+              contacts={listContacts}
               handleContactPress={handleContactPress}
             />
           ) : null}

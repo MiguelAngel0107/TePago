@@ -47,7 +47,7 @@ export default function ListContacts(props) {
                   fontSize={24}
                   fontWeight={'light'}
                   textAlign={'center'}>
-                  {contact.name}
+                  {contact.nombre}
                 </Text>
               </Box>
             </TouchableOpacity>

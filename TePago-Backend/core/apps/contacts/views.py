@@ -9,12 +9,12 @@ from rest_framework import status
 class ContactoCreateAPIView(APIView):
     def post(self, request):
         try:
-            nombre = request.data.get('nombre')
+            nombre = request.data.get('name')
             telefono = request.data.get('telefono')
             direccion = request.data.get('direccion', None)
-
-            contacto = Contacto.objects.create(
-                usuario=request.user, nombre=nombre, telefono=telefono, direccion=direccion)
+            print(request.data)
+            Contacto.objects.create(
+                usuario=request.user, nombre=nombre, telefono=telefono)
 
             return Response({"message": "Contacto creado exitosamente."}, status=status.HTTP_201_CREATED)
         except:

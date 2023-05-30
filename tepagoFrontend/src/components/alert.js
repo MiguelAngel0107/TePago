@@ -1,7 +1,14 @@
 import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
+import {View, Text, StyleSheet} from 'react-native';
 
-const Alert = ({ message, type }) => {
+/**
+ * Muestra una alerta con un mensaje y un tipo específico.
+ *
+ * @param {string} message - El mensaje que se mostrará en la alerta.
+ * @param {string} type - El tipo de alerta ('green', 'red', 'yellow').
+ * @returns {React.ReactNode} El componente de alerta.
+ */
+const Alert = ({message, type}) => {
   let backgroundColor, textColor;
 
   // Determina los colores de fondo y texto según el tipo de alerta
@@ -24,8 +31,8 @@ const Alert = ({ message, type }) => {
   }
 
   return (
-    <View style={[styles.container, { backgroundColor }]}>
-      <Text style={[styles.message, { color: textColor }]}>{message}</Text>
+    <View style={[styles.container, {backgroundColor}]}>
+      <Text style={[styles.message, {color: textColor}]}>{message}</Text>
     </View>
   );
 };

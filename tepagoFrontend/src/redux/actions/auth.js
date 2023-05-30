@@ -81,6 +81,7 @@ export const load_tokens =
     if (metodo == 'all') {
       try {
         const keys = await AsyncStorage.getAllKeys();
+        console.log("All Tokens Enables")
         console.log(keys);
       } catch (error) {
         console.log('Error al obtener las claves de AsyncStorage:', error);

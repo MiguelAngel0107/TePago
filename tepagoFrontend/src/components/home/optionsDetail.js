@@ -33,8 +33,8 @@ export default function OptionsDetail(props) {
         alignItems: 'center',
       }}
       bg="bgColor.300">
-      <Text>{SelectedContact.name}</Text>
-      <Text>{SelectedContact.phone}</Text>
+      <Text>{SelectedContact.nombre}</Text>
+      <Text>{SelectedContact.telefono}</Text>
 
       <Button onPress={openDialog}>Abrir Diálogo</Button>
 
