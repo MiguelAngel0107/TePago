@@ -23,9 +23,9 @@ const AddProduct = ({isOpen, closeDialog}) => {
     category: null,
   });
   const [img, setImg] = useState(null);
+  const [showAdvancedFields, setShowAdvancedFields] = useState(false);
 
   const {name, photo, description, price, category} = data;
-  // Crear un objeto FormData
   const formData = new FormData();
 
   const handleInputChange = (key, value) => {
@@ -33,6 +33,9 @@ const AddProduct = ({isOpen, closeDialog}) => {
       ...prevData,
       [key]: value,
     }));
+    if (key === 'name') {
+      setShowAdvancedFields(false);
+    }
   };
 
   const handleLogin = () => {
@@ -44,7 +47,7 @@ const AddProduct = ({isOpen, closeDialog}) => {
       price: '',
       category: null,
     });
-    closeDialog()
+    closeDialog();
   };
 
   return (
@@ -65,91 +68,106 @@ const AddProduct = ({isOpen, closeDialog}) => {
               onChangeText={text => handleInputChange('name', text)}
               color="textColor.100"
             />
+            <FormControl mt={4}>
+              <FormControl.Label color="textColor.100">
+                <Text color="textColor.100">Price</Text>
+              </FormControl.Label>
+              <Input
+                placeholder="Enter product price"
+                value={price}
+                onChangeText={text => handleInputChange('price', text)}
+                color="textColor.100"
+              />
+            </FormControl>
           </FormControl>
-          <FormControl mt={4}>
-            <FormControl.Label color="textColor.100">
-              <Text color="textColor.100">Photo</Text>
-            </FormControl.Label>
-            <TouchableOpacity>
-              <Button
-                title="Seleccionar Imagen"
-                backgroundColor="primary.300"
-                onPress={() => {
-                  launchImageLibrary(
-                    {
-                      selectionLimit: 0,
-                      mediaType: 'photo',
-                      includeBase64: false,
-                    },
-                    response => {
-                      if (response.didCancel) {
-                        console.log('Selección de imagen cancelada');
-                      } else if (response.error) {
-                        console.log(
-                          'Error al seleccionar la imagen:',
-                          response.error,
-                        );
-                      } else {
-                        console.log(
-                          'Ruta de la imagen seleccionada:',
-                          response,
-                        );
-                        setImg(response);
-                        // Agregar la imagen al objeto FormData
-                        formData.append('image', {
-                          uri: response.assets[0].uri,
-                          type: response.assets[0].type, // Tipo de la imagen, por ejemplo: 'image/jpeg'
-                          name: response.assets[0].fileName, // Nombre de la imagen, por ejemplo: 'image.jpg'
-                        });
-                      }
-                    },
-                  );
-                }}>
-                <Text>Select Photo</Text>
-              </Button>
-            </TouchableOpacity>
-            {img && (
-              <Box mt={4} alignItems="center">
-                <Image
-                  source={{uri: img.assets[0]['uri']}}
-                  alt={img.assets[0]['fileName']}
-                  size="2xl"
-                  resizeMode="contain"
+
+          {showAdvancedFields && (
+            <>
+              <FormControl mt={4}>
+                <FormControl.Label color="textColor.100">
+                  <Text color="textColor.100">Photo</Text>
+                </FormControl.Label>
+                <TouchableOpacity>
+                  <Button
+                    title="Seleccionar Imagen"
+                    backgroundColor="primary.300"
+                    onPress={() => {
+                      launchImageLibrary(
+                        {
+                          selectionLimit: 0,
+                          mediaType: 'photo',
+                          includeBase64: false,
+                        },
+                        response => {
+                          if (response.didCancel) {
+                            console.log('Selección de imagen cancelada');
+                          } else if (response.error) {
+                            console.log(
+                              'Error al seleccionar la imagen:',
+                              response.error,
+                            );
+                          } else {
+                            console.log(
+                              'Ruta de la imagen seleccionada:',
+                              response,
+                            );
+                            setImg(response);
+                            // Agregar la imagen al objeto FormData
+                            formData.append('image', {
+                              uri: response.assets[0].uri,
+                              type: response.assets[0].type, // Tipo de la imagen, por ejemplo: 'image/jpeg'
+                              name: response.assets[0].fileName, // Nombre de la imagen, por ejemplo: 'image.jpg'
+                            });
+                          }
+                        },
+                      );
+                    }}>
+                    <Text>Select Photo</Text>
+                  </Button>
+                </TouchableOpacity>
+                {img && (
+                  <Box mt={4} alignItems="center">
+                    <Image
+                      source={{uri: img.assets[0]['uri']}}
+                      alt={img.assets[0]['fileName']}
+                      size="2xl"
+                      resizeMode="contain"
+                    />
+                  </Box>
+                )}
+                {/* Aquí puedes agregar un componente de selección de imagen o implementar la lógica para subir una imagen */}
+              </FormControl>
+              <FormControl mt={4}>
+                <FormControl.Label color="textColor.100">
+                  <Text color="textColor.100">Description</Text>
+                </FormControl.Label>
+                <Input
+                  placeholder="Enter product description"
+                  value={description}
+                  onChangeText={text => handleInputChange('description', text)}
+                  color="textColor.100"
                 />
-              </Box>
-            )}
-            {/* Aquí puedes agregar un componente de selección de imagen o implementar la lógica para subir una imagen */}
-          </FormControl>
-          <FormControl mt={4}>
-            <FormControl.Label color="textColor.100">
-              <Text color="textColor.100">Description</Text>
-            </FormControl.Label>
-            <Input
-              placeholder="Enter product description"
-              value={description}
-              onChangeText={text => handleInputChange('description', text)}
-              color="textColor.100"
-            />
-          </FormControl>
-          <FormControl mt={4}>
-            <FormControl.Label color="textColor.100">
-              <Text color="textColor.100">Price</Text>
-            </FormControl.Label>
-            <Input
-              placeholder="Enter product price"
-              value={price}
-              onChangeText={text => handleInputChange('price', text)}
-              color="textColor.100"
-            />
-          </FormControl>
-          <FormControl mt={4}>
-            <FormControl.Label color="textColor.100">
-              <Text color="textColor.100">Category</Text>
-            </FormControl.Label>
-            {/* Aquí puedes agregar un componente de selección de categoría o implementar la lógica para seleccionar una categoría */}
-          </FormControl>
+              </FormControl>
+              <FormControl mt={4}>
+                <FormControl.Label color="textColor.100">
+                  <Text color="textColor.100">Category</Text>
+                </FormControl.Label>
+                {/* Aquí puedes agregar un componente de selección de categoría o implementar la lógica para seleccionar una categoría */}
+              </FormControl>
+            </>
+          )}
         </Modal.Body>
         <Modal.Footer>
+          <Button
+            variant="link"
+            mb={3}
+            mt={-4}
+            onPress={() => setShowAdvancedFields(!showAdvancedFields)}
+            colorScheme="primary">
+            {showAdvancedFields
+              ? 'Ocultar campos avanzados'
+              : 'Mostrar campos avanzados'}
+          </Button>
           <Box
             display="flex"
             flexDirection="row"

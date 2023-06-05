@@ -34,7 +34,9 @@ const InitApp = ({navigation}) => {
             Registrarse
           </Button>
           <Button
-            onPress={() => navigation.navigate('Login')}
+            onPress={() => {
+              navigation.navigate('Login');
+            }}
             px={16}
             py={4}
             mb={10}

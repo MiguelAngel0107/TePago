@@ -11,16 +11,23 @@ import {
 import React, {useState} from 'react';
 
 export default function OptionsDetail(props) {
-  const [isOpen, setIsOpen] = useState(false);
   const SelectedContact = props.selectedContact;
 
-  const openDialog = () => {
-    setIsOpen(true);
+  const handleAddDebt = () => {
+    // Lógica para agregar deuda al usuario
+    console.log('Agregar deuda');
   };
 
-  const closeDialog = () => {
-    setIsOpen(false);
+  const handleEditUser = () => {
+    // Lógica para editar al usuario
+    console.log('Editar usuario');
   };
+
+  const handleDeleteUser = () => {
+    // Lógica para eliminar al usuario
+    console.log('Eliminar usuario');
+  };
+
   return (
     <View
       style={{
@@ -33,25 +40,20 @@ export default function OptionsDetail(props) {
         alignItems: 'center',
       }}
       bg="bgColor.300">
-      <Text>{SelectedContact.nombre}</Text>
-      <Text>{SelectedContact.telefono}</Text>
+      <Text>{SelectedContact && SelectedContact.nombre}</Text>
+      <Text>{SelectedContact && SelectedContact.telefono}</Text>
 
-      <Button onPress={openDialog}>Abrir Diálogo</Button>
-
-      <Modal isOpen={isOpen} onClose={closeDialog}>
-        <Modal.Content>
-          <Modal.CloseButton onPress={closeDialog} />
-          <Modal.Header>
-            <Text>Título del Diálogo</Text>
-          </Modal.Header>
-          <Modal.Body>
-            <Text>Contenido del Diálogo</Text>
-          </Modal.Body>
-          <Modal.Footer>
-            <Button onPress={closeDialog}>Cerrar</Button>
-          </Modal.Footer>
-        </Modal.Content>
-      </Modal>
+      <HStack space={2} mt={4}>
+        <Button onPress={handleAddDebt} colorScheme="primary">
+          Add Deuda
+        </Button>
+        <Button onPress={handleEditUser} colorScheme="primary">
+          Update Usuario
+        </Button>
+        <Button onPress={handleDeleteUser} colorScheme="primary">
+          Delete Usuario
+        </Button>
+      </HStack>
     </View>
   );
 }

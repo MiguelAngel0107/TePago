@@ -27,6 +27,7 @@ const AddContact = ({isOpen, closeDialog}) => {
     redes_sociales: '',
     notas: '',
   });
+  const [showAdvancedFields, setShowAdvancedFields] = useState(false);
   const {
     name,
     telefono,
@@ -43,6 +44,9 @@ const AddContact = ({isOpen, closeDialog}) => {
       ...prevData,
       [key]: value,
     }));
+    if (key === 'name' || key === 'telefono') {
+      setShowAdvancedFields(false);
+    }
   };
 
   const handleSubmit = () => {
@@ -81,7 +85,7 @@ const AddContact = ({isOpen, closeDialog}) => {
               color="textColor.100"
             />
           </FormControl>
-          <FormControl>
+          <FormControl mt={4}>
             <FormControl.Label>
               <Text color="textColor.100">Celular</Text>
             </FormControl.Label>
@@ -89,7 +93,7 @@ const AddContact = ({isOpen, closeDialog}) => {
               <InputLeftAddon children={'+51'} />
               <Input
                 isRequired
-                width={'sm'}
+                width="83%"
                 placeholder="Enter contact number"
                 value={telefono}
                 onChangeText={text => handleInputChange('telefono', text)}
@@ -98,76 +102,95 @@ const AddContact = ({isOpen, closeDialog}) => {
             </InputGroup>
           </FormControl>
 
-          <FormControl>
-            <FormControl.Label>
-              <Text color="textColor.100">Direccion</Text>
-            </FormControl.Label>
-            <Input
-              placeholder="Enter contact address"
-              value={direccion}
-              onChangeText={text => handleInputChange('direccion', text)}
-              color="textColor.100"
-            />
-          </FormControl>
-          <FormControl>
-            <FormControl.Label>
-              <Text color="textColor.100">Image</Text>
-            </FormControl.Label>
-            <Input
-              placeholder="Enter image URL"
-              value={image}
-              onChangeText={text => handleInputChange('image', text)}
-              color="textColor.100"
-            />
-          </FormControl>
-          <FormControl>
-            <FormControl.Label>
-              <Text color="textColor.100">Correo Electrónico</Text>
-            </FormControl.Label>
-            <Input
-              placeholder="Enter contact email"
-              value={correo_electronico}
-              onChangeText={text =>
-                handleInputChange('correo_electronico', text)
-              }
-              color="textColor.100"
-            />
-          </FormControl>
-          <FormControl>
-            <FormControl.Label>
-              <Text color="textColor.100">Fecha de Cumpleaños</Text>
-            </FormControl.Label>
-            <Input
-              placeholder="Enter contact birthday"
-              value={fecha_cumpleanos}
-              onChangeText={text => handleInputChange('fecha_cumpleanos', text)}
-              color="textColor.100"
-            />
-          </FormControl>
-          <FormControl>
-            <FormControl.Label>
-              <Text color="textColor.100">Redes Sociales</Text>
-            </FormControl.Label>
-            <Input
-              placeholder="Enter contact social media"
-              value={redes_sociales}
-              onChangeText={text => handleInputChange('redes_sociales', text)}
-              color="textColor.100"
-            />
-          </FormControl>
-          <FormControl>
-            <FormControl.Label>
-              <Text color="textColor.100">Notas</Text>
-            </FormControl.Label>
-            <Input
-              placeholder="Enter contact notes"
-              value={notas}
-              onChangeText={text => handleInputChange('notas', text)}
-              color="textColor.100"
-            />
-          </FormControl>
+          {showAdvancedFields && (
+            <>
+              <FormControl mt={4}>
+                <FormControl.Label>
+                  <Text color="textColor.100">Direccion</Text>
+                </FormControl.Label>
+                <Input
+                  placeholder="Enter contact address"
+                  value={direccion}
+                  onChangeText={text => handleInputChange('direccion', text)}
+                  color="textColor.100"
+                />
+              </FormControl>
+              <FormControl mt={4}>
+                <FormControl.Label>
+                  <Text color="textColor.100">Image</Text>
+                </FormControl.Label>
+                <Input
+                  placeholder="Enter image URL"
+                  value={image}
+                  onChangeText={text => handleInputChange('image', text)}
+                  color="textColor.100"
+                />
+              </FormControl>
+              <FormControl mt={4}>
+                <FormControl.Label>
+                  <Text color="textColor.100">Correo Electrónico</Text>
+                </FormControl.Label>
+                <Input
+                  placeholder="Enter contact email"
+                  value={correo_electronico}
+                  onChangeText={text =>
+                    handleInputChange('correo_electronico', text)
+                  }
+                  color="textColor.100"
+                />
+              </FormControl>
+              <FormControl mt={4}>
+                <FormControl.Label>
+                  <Text color="textColor.100">Fecha de Cumpleaños</Text>
+                </FormControl.Label>
+                <Input
+                  placeholder="Enter contact birthday"
+                  value={fecha_cumpleanos}
+                  onChangeText={text =>
+                    handleInputChange('fecha_cumpleanos', text)
+                  }
+                  color="textColor.100"
+                />
+              </FormControl>
+              <FormControl mt={4}>
+                <FormControl.Label>
+                  <Text color="textColor.100">Redes Sociales</Text>
+                </FormControl.Label>
+                <Input
+                  placeholder="Enter contact social media"
+                  value={redes_sociales}
+                  onChangeText={text =>
+                    handleInputChange('redes_sociales', text)
+                  }
+                  color="textColor.100"
+                />
+              </FormControl>
+              <FormControl mt={4}>
+                <FormControl.Label>
+                  <Text color="textColor.100">Notas</Text>
+                </FormControl.Label>
+                <Input
+                  placeholder="Enter contact notes"
+                  value={notas}
+                  onChangeText={text => handleInputChange('notas', text)}
+                  color="textColor.100"
+                />
+              </FormControl>
+            </>
+          )}
         </Modal.Body>
         <Modal.Footer>
+          <Button
+            variant="link"
+            mb={3}
+            mt={-4}
+            onPress={() => setShowAdvancedFields(!showAdvancedFields)}
+            colorScheme="primary">
+            {showAdvancedFields
+              ? 'Ocultar campos avanzados'
+              : 'Mostrar campos avanzados'}
+          </Button>
+
           <Box
             display="flex"
             flexDirection="row"

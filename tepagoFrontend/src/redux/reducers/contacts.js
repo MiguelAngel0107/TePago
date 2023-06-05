@@ -33,30 +33,15 @@ const contactsSlice = createSlice({
         ...state,
       };
     },
-    UPDATE_CONTACT_SUCCESS(state, action) {
+    UPDATE_CONTACT_SUCCESS(state, action) {},
+    UPDATE_CONTACT_FAIL(state) {},
+    DELETE_CONTACT_SUCCESS(state, action) {},
+    DELETE_CONTACT_FAIL(state) {},
+    SELECT_CONTACT(state, action) {
       let payload = action.payload;
       return {
         ...state,
-        products_sold: payload.products,
-      };
-    },
-    UPDATE_CONTACT_FAIL(state) {
-      return {
-        ...state,
-        products_sold: null,
-      };
-    },
-    DELETE_CONTACT_SUCCESS(state, action) {
-      let payload = action.payload;
-      return {
-        ...state,
-        product: payload.product,
-      };
-    },
-    DELETE_CONTACT_FAIL(state) {
-      return {
-        ...state,
-        product: null,
+        contact_select: payload,
       };
     },
   },
@@ -70,6 +55,7 @@ export const {
   UPDATE_CONTACT_FAIL,
   DELETE_CONTACT_SUCCESS,
   DELETE_CONTACT_FAIL,
+  SELECT_CONTACT,
 } = contactsSlice.actions;
 
 export default contactsSlice.reducer;

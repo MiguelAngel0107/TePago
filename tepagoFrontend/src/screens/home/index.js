@@ -16,17 +16,15 @@ import OptionsDetail from '../../components/home/optionsDetail';
 import ListContacts from '../../components/home/listContacts';
 
 import Layout from '../../layout/layout';
-import {useSelector} from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
+import {select_contact} from '../../redux/actions/contacts';
 
 function Home({navigation}) {
+  const dispatch = useDispatch();
+  const select_contact_var = useSelector(
+    state => state.Contacts.contact_select,
+  );
   const contacts = useSelector(state => state.Contacts.contacts);
-
-  const [selectedContact, setSelectedContact] = useState({
-    id: null,
-    nombre: '',
-    telefono: '',
-  });
-
   const [listContacts, setListContacts] = useState([
     {id: 0, nombre: 'Miguel Egocheaga', telefono: '123-456-7890'},
     {id: 1, nombre: 'Gabriel Smith', telefono: '987-654-3210'},
@@ -39,22 +37,23 @@ function Home({navigation}) {
     {id: 8, nombre: 'John Doe', telefono: '123-456-7890'},
     {id: 9, nombre: 'Jane Smith', telefono: '987-654-3210'},
   ]);
-
+  const [selectedContact, setSelectedContact] = useState(null);
   useEffect(() => {
     if (contacts) {
       setListContacts(contacts);
     }
   }, [contacts]);
+  useEffect(() => {
+    if (select_contact_var) {
+      setSelectedContact(select_contact_var);
+    }
+  }, [select_contact_var]);
 
   const handleContactPress = contact => {
     if (selectedContact && contact.id == selectedContact.id) {
-      setSelectedContact({
-        id: null,
-        nombre: '',
-        telefono: '',
-      });
+      dispatch(select_contact(null));
     } else {
-      setSelectedContact(contact);
+      dispatch(select_contact(contact));
     }
   };
 

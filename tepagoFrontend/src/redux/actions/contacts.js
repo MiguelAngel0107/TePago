@@ -7,6 +7,7 @@ import {
   UPDATE_CONTACT_FAIL,
   DELETE_CONTACT_SUCCESS,
   DELETE_CONTACT_FAIL,
+  SELECT_CONTACT,
 } from '../reducers/contacts';
 
 import {setAlert} from './alert';
@@ -105,4 +106,8 @@ export const create_contact = data => async dispatch => {
     dispatch(CREATE_CONTACT_FAIL());
     dispatch(setAlert('Servidor Congestionado intente mas tarde', 'red'));
   }
+};
+
+export const select_contact = contact => dispatch => {
+  dispatch(SELECT_CONTACT(contact));
 };
