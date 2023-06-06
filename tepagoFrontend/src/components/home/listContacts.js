@@ -32,7 +32,7 @@ export default function ListContacts(props) {
     PanResponder.create({
       onMoveShouldSetPanResponder: (evt, gestureState) => {
         // Verificar si el desplazamiento es suficiente en cualquier dirección
-        return gestureState.dx < -50;
+        return gestureState.dx < -50 || gestureState.dx > 50;
       },
       onPanResponderGrant: () => {
         //setIsOpen(true);
@@ -40,14 +40,11 @@ export default function ListContacts(props) {
       onPanResponderMove: (evt, gestureState) => {
         // Resto del código para el desplazamiento horizontal y vertical
         if (gestureState.dx < -50) {
-          setIsOpen(true);
-          setIsOpenV2(false);
-        } else if (gestureState.dy < -50) {
-          setIsOpen(false);
-          setIsOpenV2(true);
+          console.log('se deslizó hacia la izquierda');
+        } else if (gestureState.dx > 50) {
+          console.log('se deslizó hacia la derecha');
         } else {
-          setIsOpen(false);
-          setIsOpenV2(false);
+          console.log('se deslizó en ambas direcciones');
         }
       },
     }),
@@ -57,7 +54,12 @@ export default function ListContacts(props) {
     <ScrollView>
       <VStack space={2} p={2}>
         {contacts.map((contact, index) => (
-          <Flex key={contact.id} py={5} direction="row" alignItems="center">
+          <Flex
+            key={contact.id}
+            py={5}
+            direction="row"
+            alignItems="center"
+            {...panResponder.panHandlers}>
             <Box
               style={{
                 width: 10,
