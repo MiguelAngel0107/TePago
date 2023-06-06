@@ -46,6 +46,8 @@ function Home({navigation}) {
   useEffect(() => {
     if (select_contact_var) {
       setSelectedContact(select_contact_var);
+    }else{
+      setSelectedContact(null)
     }
   }, [select_contact_var]);
 

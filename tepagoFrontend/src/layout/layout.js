@@ -38,19 +38,13 @@ export default function Layout(props) {
   const drawer = useRef(null);
 
   useEffect(() => {
-    //dispatch(load_tokens('get', 'access'));
-    //dispatch(load_tokens('get', 'refresh'));
-    //dispatch(refresh());
-    //dispatch(check_authenticated());
-    //dispatch(get_contacts())
+    dispatch(load_tokens('get', 'access'));
+    dispatch(load_tokens('get', 'refresh'));
+    dispatch(refresh());
+    dispatch(check_authenticated());
+    dispatch(get_contacts())
     //dispatch(load_tokens('all'));
   }, []);
-
-  useEffect(() => {
-    if (!isAuthenticated) {
-      props.navigation.navigate('Init');
-    }
-  }, [isAuthenticated]);
 
   const navigationView = () => (
     <View style={[styles.container, styles.navigationContainer]}>
