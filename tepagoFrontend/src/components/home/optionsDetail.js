@@ -40,8 +40,10 @@ export default function OptionsDetail(props) {
         alignItems: 'center',
       }}
       bg="bgColor.300">
-      <Text>{SelectedContact && SelectedContact.nombre}</Text>
-      <Text>{SelectedContact && SelectedContact.telefono}</Text>
+      <VStack alignItems={"center"}>
+        <Text fontSize="4xl" fontWeight={600}>{SelectedContact ? SelectedContact.nombre : null}</Text>
+        <Text fontSize="xl">{SelectedContact ? SelectedContact.telefono : null}</Text>
+      </VStack>
 
       <HStack space={2} mt={4}>
         <Button onPress={handleAddDebt} colorScheme="primary">
