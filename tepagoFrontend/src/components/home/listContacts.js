@@ -5,12 +5,14 @@ import {
   PanResponder,
   Animated,
 } from 'react-native';
-import React, {useRef, useEffect} from 'react';
+import React, {useRef, useEffect, useState} from 'react';
 import Icon from 'react-native-vector-icons/FontAwesome';
 
 export default function ListContacts(props) {
   const myRefs = useRef([]);
   const hStackRef = useRef(null);
+  const [backgroundColor, setBackgroundColor] = useState('#00BCD4');
+  const pan = useRef(new Animated.ValueXY()).current;
 
   useEffect(() => {
     if (myRefs.current) {
@@ -38,6 +40,13 @@ export default function ListContacts(props) {
         //setIsOpen(true);
       },
       onPanResponderMove: (evt, gestureState) => {
+        // Actualizar la posición del gesto
+        pan.setValue({x: gestureState.dx, y: pan.y._value});
+
+        // Cambiar el color gradualmente basado en gestureState.dx
+        const colorValue = gestureState.dx > 0 ? gestureState.dx / 200 : 0;
+        setBackgroundColor(`rgba(0, 0, 0, ${colorValue})`);
+
         // Resto del código para el desplazamiento horizontal y vertical
         if (gestureState.dx < -50) {
           console.log('se deslizó hacia la izquierda');
@@ -46,6 +55,10 @@ export default function ListContacts(props) {
         } else {
           console.log('se deslizó en ambas direcciones');
         }
+      },
+      onPanResponderRelease: () => {
+        // Restaurar el color cuando se suelta el gesto
+        setBackgroundColor('#00BCD4');
       },
     }),
   ).current;
@@ -59,7 +72,14 @@ export default function ListContacts(props) {
             py={5}
             direction="row"
             alignItems="center"
-            {...panResponder.panHandlers}>
+            bgColor={'bgColor.100'}
+            {...panResponder.panHandlers}
+            style={[
+              {
+                backgroundColor,
+              },
+              pan.getLayout(),
+            ]}>
             <Box
               style={{
                 width: 10,
@@ -68,7 +88,6 @@ export default function ListContacts(props) {
                 borderBottomLeftRadius: 10, // Ajusta el valor según tu preferencia
               }}
               bgColor={'primary.300'}></Box>
-
             <Box bgColor={'bgColor.400'} p={4} ml={2} borderRadius={'full'}>
               <Icon name="user" size={30} color="#009700" />
             </Box>
