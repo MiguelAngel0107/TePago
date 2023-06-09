@@ -72,14 +72,9 @@ export default function ListContacts(props) {
             py={5}
             direction="row"
             alignItems="center"
-            bgColor={'bgColor.100'}
+            bgColor={'bgColor.400'}
             {...panResponder.panHandlers}
-            style={[
-              {
-                backgroundColor,
-              },
-              pan.getLayout(),
-            ]}>
+            >
             <Box
               style={{
                 width: 10,
